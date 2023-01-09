@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "start": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "nuxt": "3.0.0",
+    "sass": "^1.57.1",
+    "sass-loader": "^13.2.0"
+  },
+  "dependencies": {
+    "@nuxt/test-utils": "^3.0.0",
+    "@pinia/nuxt": "^0.4.6",
+    "normalize.css": "^8.0.1",
+    "pinia": "^2.0.28",
+    "vitest": "^0.26.3"
+  }
+}
