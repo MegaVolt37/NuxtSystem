@@ -21,7 +21,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 div {
-  background-color: $black;
   h1 {
     font-size: 50px;
     color: aqua;
