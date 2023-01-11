@@ -1,7 +1,7 @@
 <template>
   <div class="app">
-    <NuxtPage v-if="isLogin()"/>
-    <authorization v-else/>
+    <NuxtPage v-if="isLogin()" />
+    <authorization v-else />
   </div>
 </template>
 <style lang="scss" scoped>
@@ -9,5 +9,6 @@
   width: 100%;
   min-height: 100vh;
   background-color: $light-black;
+  padding: 45px 35px;
 }
 </style>

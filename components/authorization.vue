@@ -5,35 +5,95 @@
         <div
           class="auth__form-fields"
           v-for="item in formState"
-          :key="item.name"
+          :key="item?.name"
         >
-          <p>{{ item.name }}</p>
-          <input :type="item.type" />
+          <p>{{ item?.name }}</p>
+          <input
+            v-model="item.value"
+            :type="item?.type"
+            :class="{ error: errorClass(item) }"
+            @input="writeForm(item)"
+            :placeholder="errorTextInput(item)"
+            autocomplete="new-password"
+          />
         </div>
         <span class="auth__form-forgot">Forgot Password?</span>
-        <button class="auth__form-send">Login</button>
+        <button class="auth__form-send" @click.prevent="sendForm">Login</button>
       </form>
-      <img class="auth__content-close" src="@/assets/images/reset.svg" alt="Закрыть окно">
+      <img
+        class="auth__content-close"
+        src="@/assets/images/reset.svg"
+        alt="Закрыть окно"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import { required } from "@vuelidate/validators";
+import { useVuelidate } from "@vuelidate/core";
+import { mapActions } from "pinia";
+import { storeAuth } from "~/store/Auth";
 export default {
   name: "Authorization",
   data() {
     return {
+      v$: useVuelidate(),
+      formData: {
+        Username: "",
+        Password: "",
+      },
       formState: [
         {
           name: "Username",
           type: "text",
+          value: "",
         },
         {
           name: "Password",
           type: "password",
+          value: "",
         },
       ],
+      errors: {
+        Username: false,
+        Password: false,
+      },
+      textError: "Обязательное поле для заполнения",
     };
+  },
+  validations() {
+    return {
+      formData: {
+        Username: { required },
+        Password: { required },
+      },
+    };
+  },
+  methods: {
+    ...mapActions(storeAuth, ["login"]),
+    errorClass(item) {
+      return this.errors[item.name];
+    },
+    errorTextInput(value) {
+      return this.errors[value.name] ? this.textError : "";
+    },
+    writeForm(value) {
+      this.formData[value?.name] = value?.value;
+      this.v$.formData[value?.name].$touch();
+      this.errors[value.name] = this.v$.formData[value.name].$error;
+    },
+    async sendForm() {
+      try {
+        const form = {
+          email: this.formData.Username,
+          password: this.formData.Password,
+        };
+        this.login(form)
+      } catch (e) {
+        console.log(e);
+      }
+    },
   },
 };
 </script>
@@ -88,8 +148,16 @@ export default {
         background: $black;
         border-radius: 12px;
         padding: 15px 20px;
+        transition: all 0.3s ease-in-out;
         &:focus {
           outline: none;
+        }
+      }
+      input.error {
+        border-color: red;
+        &::placeholder {
+          color: red;
+          font-size: 12px;
         }
       }
     }
