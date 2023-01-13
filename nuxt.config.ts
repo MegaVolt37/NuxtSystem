@@ -9,11 +9,11 @@ export default defineNuxtConfig({
       }
     }
   },
-  runtimeConfig: {
-    public: {
-      baseURL: process.env.BASE_URL || 'http://localhost:5000',
-    },
-  },
+  // runtimeConfig: {
+  //   public: {
+  //     baseURL: process.env.BASE_URL || 'http://localhost:5000',
+  //   },
+  // },
   css: ['normalize.css/normalize.css'],
   modules: [
     // ...
@@ -28,5 +28,18 @@ export default defineNuxtConfig({
         ],
       },
     ],
+    '@nuxtjs/device',
+    'nuxt-socket-io',
   ],
+  device: {
+    refreshOnResize: true
+  },
+  io: {
+    sockets: [
+      {
+        name: "home",
+        url: process.env.BASE_URL || 'http://localhost:3000'
+      }
+    ]
+  },
 })
