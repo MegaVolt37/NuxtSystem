@@ -1,14 +1,17 @@
 <template>
   <div
     class="container_fluid"
-    :class="{fixed: getModal}"
+    :class="{ fixed: getModal }"
     :style="
       getModal
         ? 'box-shadow: 0px 8px 57px 139px rgba(125, 125, 125, 0.25);'
         : null
     "
   >
-    <header-home :activeComponent="activeComponent" />
+    <header-home
+      :activeComponent="activeComponent"
+      @changeComponent="changeComponent"
+    />
     <div class="container__home">
       <div class="home__top">
         <div class="home__top-sorting">
@@ -18,22 +21,25 @@
           </button>
           <div></div>
         </div>
-        <h1>Welcome</h1>
+        <h1>{{ timeTitle }} {{ readTime }}! {{ time }}</h1>
         <button class="home__top-export">
           <img src="@/assets/images/export.svg" alt="Экспортировать" />
           <p>Export</p>
         </button>
       </div>
-      <component :is="activeComponent"></component>
+      <transition name="home_component" mode="out-in">
+        <component :is="activeComponent"></component>
+      </transition>
     </div>
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import { mapState } from "pinia";
 import { storeAuth } from "~/store/Auth";
 import { storeData } from "~/store/Data";
 import graph from "~/components/Graph/Graph.vue";
+import users from "~/components/Users/Users.vue";
 export default {
   name: "PageIndex",
   data() {
@@ -41,11 +47,32 @@ export default {
       activeComponent: "graph",
       socket: {},
       connected: {},
+      time: "",
+      interval: {},
     };
   },
   computed: {
     ...mapState(storeAuth, ["getLogin"]),
     ...mapState(storeData, ["getModal"]),
+    readTime() {
+      const hour = new Date().getHours();
+      if (hour >= 22 || hour < 7) return "ночи";
+      if (hour >= 6 && hour < 12) return "утро";
+      if (hour >= 12 && hour < 18) return "день";
+      if (hour >= 18 && hour < 22) return "вечер";
+    },
+    timeTitle() {
+      switch (this.readTime) {
+        case "ночи":
+          return "Доброй";
+        case "утро":
+          return "Доброе";
+        case "день":
+          return "Добрый";
+        case "вечер":
+          return "Добрый";
+      }
+    },
   },
   mounted() {
     // this.socket = this.$nuxtSocket({
@@ -61,8 +88,15 @@ export default {
     //   this.connected.value = this.socket.connected;
     //   console.log("disconnect: " + this.connected)
     // });
+    // this.interval = setInterval(() => {
+    //   this.time = new Date().toLocaleTimeString("ru-RU");
+    //   console.log("time: " + this.time);
+    // }, 1000);
   },
   methods: {
+    changeComponent(name) {
+      this.activeComponent = name;
+    },
     // method1() {
     //   /* Emit events */
     //   this.socket.emit('method1', {
@@ -72,13 +106,12 @@ export default {
     //   })
     // }
   },
-  watch: {
-    isModal(value) {
-      console.log("isModal", value);
-    },
-  },
+  // beforeUnmount() {
+  //   clearInterval(this.interval);
+  // },
   components: {
     graph,
+    users,
   },
 };
 </script>
@@ -134,4 +167,25 @@ export default {
     color: #ffffff;
   }
 }
+.home_component-enter-active,
+.home_component-leave-active {
+  transition: opacity 0.3s ease-in-out;
+}
+.home_component-enter, .home_component-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+  opacity: 0;
+}
+// .home_component-enter-active {
+//   animation: change-components .5s ease-in-out 0s;
+// }
+// .home_component-leave-active {
+//   animation: change-components .5s ease-in-out 0s;
+// }
+// @keyframes change-components {
+//   0% {
+//     opacity: 0;
+//   }
+//   100% {
+//     opacity: 1;
+//   }
+// }
 </style>

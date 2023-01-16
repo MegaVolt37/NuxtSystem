@@ -1,5 +1,5 @@
 <template>
-  <div class="graph__top-item" v-for="(item, index) in graph_top" :key="index">
+  <div class="graph__top-item" v-for="(item, index) in graph_info" :key="index">
     <div class="graph__top-item__cube" :style="readColor(item.color)"></div>
     <span
       class="graph__top-item__statistics"
@@ -21,28 +21,7 @@
 import arrowIcon from "~/components/images/arrowSmallIcon.vue";
 export default {
   data() {
-    return {
-      graph_top: [
-        {
-          color: "#6BE2BE",
-          total: "+32.40",
-          title: "In Progress",
-          subtitle: "Total Revenue",
-        },
-        {
-          color: "#FF7E78",
-          total: "-3.43",
-          title: "Waiting for Review",
-          subtitle: "Total Paypal Revenue",
-        },
-        {
-          color: "#8989C9",
-          total: "+22.12",
-          title: "Done",
-          subtitle: "Total Downloads",
-        },
-      ],
-    };
+    return {};
   },
   methods: {
     readColor(color) {
@@ -59,6 +38,9 @@ export default {
         item.total.indexOf("+") < 0 ? "transform: rotateX(180deg);" : null;
       return { color, style };
     },
+  },
+  props: {
+    graph_info: Array,
   },
   components: {
     arrowIcon,

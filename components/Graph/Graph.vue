@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="graph__top">
-      <graph-top />
+      <graph-top :graph_info="graph_info"/>
     </div>
     <div class="graph__middle">
-      <graph-middle />
+      <graph-middle :graph_info="graph_info"/>
     </div>
   </div>
 </template>
@@ -13,23 +13,23 @@
 export default {
   data() {
     return {
-      graph_top: [
+      graph_info: [
         {
           color: "#6BE2BE",
           total: "+32.40",
-          title: "In Progress",
+          title: "Выполняются",
           subtitle: "Total Revenue",
         },
         {
           color: "#FF7E78",
           total: "-3.43",
-          title: "Waiting for Review",
+          title: "Провалены",
           subtitle: "Total Paypal Revenue",
         },
         {
           color: "#8989C9",
           total: "+22.12",
-          title: "Done",
+          title: "Выполнены",
           subtitle: "Total Downloads",
         },
       ],

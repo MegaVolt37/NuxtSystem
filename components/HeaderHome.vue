@@ -7,14 +7,15 @@
           v-for="(item, index) in links"
           :key="index"
         >
-          <a
+          <p
             :class="{ active: readClass(item.component) }"
             :style="'color: ' + readPath(item.component)"
+            @click="$emit('changeComponent', item.component)"
             ><component
               :path_fill="readPath(item.component)"
               :is="item.icon"
             ></component
-            >{{ item.name }}</a
+            >{{ item.name }}</p
           >
         </li>
       </ul>
@@ -65,7 +66,7 @@ export default {
           img: iconIssues,
           img_alt: "Участники",
           name: "Участники",
-          component: "",
+          component: "users",
         },
       ],
     };
@@ -81,6 +82,7 @@ export default {
   props: {
     activeComponent: String,
   },
+  emits: ["changeComponent"],
 };
 </script>
 
@@ -107,7 +109,7 @@ export default {
       margin-right: 5px;
     }
   }
-  &__link a {
+  &__link p {
     display: flex;
     align-items: center;
     font-family: "Inter500";
@@ -135,7 +137,7 @@ export default {
       margin-right: 5px;
     }
   }
-  &__link a.active {
+  &__link p.active {
     &::after {
       width: 100%;
     }

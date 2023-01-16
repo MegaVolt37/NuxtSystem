@@ -22,7 +22,7 @@
       <div v-if="index == 0" class="pie" width="auto" height="auto">
         <Pie
           id="pie"
-          :data="chartData"
+          :data="chartDataProps"
           :options="options"
           width="auto"
           height="auto"
@@ -45,9 +45,13 @@
         />
       </div>
       <div class="graph__middle-item__description" v-if="index == 0">
-        <div class="description__item" v-for="(item, index) in 3" :key="index">
-          <span></span>
-          <p>In progress</p>
+        <div
+          class="description__item"
+          v-for="(item, index) in graph_info"
+          :key="index"
+        >
+          <span :style="colorTitle(index)"></span>
+          <p>{{ item.title }}</p>
         </div>
       </div>
       <img
@@ -56,7 +60,6 @@
         alt="Развернуть"
         @click="increateSize(index)"
       />
-      <!-- <div class="graph__middle-item__share-wrapper"></div> -->
       <transition name="fade">
         <div class="graph__middle-item__share" v-show="isOpenShare === index">
           <div
@@ -64,6 +67,9 @@
             data-curtain
             data-shape="round"
             data-services="vkontakte,odnoklassniki,telegram,twitter,viber,whatsapp"
+            data-title="Заголовок ссылки"
+            data-url="http://localhost:3000/"
+            data-image="null"
           ></div>
         </div>
       </transition>
@@ -105,11 +111,11 @@ export default defineNuxtComponent({
   data() {
     return {
       chartData: {
-        labels: ["In progress", "Waiting for review", "Done Tasks"],
+        labels: [],
         datasets: [
           {
-            backgroundColor: ["#00D8FF", "#41B883", "#E46651"],
-            data: [10, 20, 32],
+            backgroundColor: ["#41B883", "#E46651", "#8989C9"],
+            data: [],
           },
         ],
       },
@@ -209,21 +215,38 @@ export default defineNuxtComponent({
     },
     openShare(index) {
       this.setModal(true);
-      console.log(this.isOpenShare);
       if (this.isOpenShare === index) {
         this.isOpenShare = false;
       } else {
         this.isOpenShare = index;
       }
     },
+    colorTitle(index) {
+      switch (index) {
+        case 0:
+          return "background-color: #41B883;"
+        case 1:
+          return "background-color: #E46651;"
+        case 2:
+          return "background-color: #8989C9;"
+      }
+    },
+  },
+  computed: {
+    chartDataProps() {
+      let Data = this.chartData;
+      Data.labels = this.graph_info.map((a) => a.title);
+      Data.datasets[0].data = this.graph_info.map((a) => Math.abs(a.total));
+      return Data;
+    },
   },
   mounted() {
-    let share = Ya.share2('my-share', {
-    content: {
-        url: 'https://yandex.com'              
-    }
-    // здесь вы можете указать и другие параметры
-});
+    let share = Ya.share2("my-share", {
+      content: {
+        url: "https://yandex.com",
+      },
+      // здесь вы можете указать и другие параметры
+    });
   },
   components: { Pie, Line, Bar },
   setup() {
@@ -235,6 +258,9 @@ export default defineNuxtComponent({
         },
       ],
     });
+  },
+  props: {
+    graph_info: Array,
   },
 });
 </script>
@@ -371,7 +397,7 @@ export default defineNuxtComponent({
     }
     &__share {
       position: absolute;
-      top: -10%;
+      top: 4%;
       left: auto;
       right: 25%;
       display: flex;
@@ -380,32 +406,21 @@ export default defineNuxtComponent({
       background-color: #000;
       border-radius: 20px;
       padding: 15px 25px;
-      animation: showSocial 1s ease-in-out 0s 1 both;
     }
-    .fade-enter-active,
+    .fade-enter-active {
+      animation: toggle-social 1s ease-in-out 0s both;
+    }
     .fade-leave-active {
-      transition: opacity 1s;
+      animation: toggle-social 1s ease-in-out 0s reverse;
     }
-    .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
-      animation: hiddenSocial 1s ease-in-out 0s 1 both;
-      opacity: 0;
-    }
-    @keyframes showSocial {
-      from {
-        display: flex;
-        top: -10%;
+    @keyframes toggle-social {
+      0% {
+        top: -6%;
+        opacity: 0;
       }
-      to {
-        display: flex;
+      100% {
         top: 4%;
-      }
-    }
-    @keyframes hiddenSocial {
-      from {
-        top: 4%;
-      }
-      to {
-        top: -10%;
+        opacity: 1;
       }
     }
   }
