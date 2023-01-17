@@ -59,6 +59,7 @@ export default {
 
 <style lang="scss" scoped>
 .users {
+  margin-top: 45px;
   background: linear-gradient(
     133.84deg,
     #4e4e4e -16.04%,
@@ -88,7 +89,7 @@ export default {
         font-weight: 600;
         font-size: 20px;
         letter-spacing: 0.15px;
-        color: #ffffff;
+        color: $text;
       }
       span {
         font-size: 14px;
@@ -97,6 +98,12 @@ export default {
       }
     }
     &-share {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      img {
+        cursor: pointer;
+      }
     }
   }
   &__middle {

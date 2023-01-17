@@ -366,7 +366,7 @@ export default defineNuxtComponent({
           font-family: "Inter600";
           font-size: 20px;
           letter-spacing: 0.15px;
-          color: #ffffff;
+          color: $text;
         }
       }
       .description__item:nth-child(2) {

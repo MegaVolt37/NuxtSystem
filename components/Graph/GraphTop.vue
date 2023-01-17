@@ -105,7 +105,7 @@ export default {
     grid-column: 1/5;
     font-family: "Inter600";
     font-size: 28px;
-    color: #ffffff;
+    color: $text;
   }
   &__subtitle {
     grid-row: 3;

@@ -6,17 +6,20 @@
           class="home__header-nav__link"
           v-for="(item, index) in links"
           :key="index"
+          v-show="item.rule != ''"
         >
           <p
+            v-if="item.rule != ''"
             :class="{ active: readClass(item.component) }"
             :style="'color: ' + readPath(item.component)"
             @click="$emit('changeComponent', item.component)"
-            ><component
+          >
+            <component
               :path_fill="readPath(item.component)"
               :is="item.icon"
             ></component
-            >{{ item.name }}</p
-          >
+            >{{ item.name }}
+          </p>
         </li>
       </ul>
     </nav>
@@ -46,9 +49,11 @@
 
 <script>
 import dashboardIcon from "@/components/images/dashboardIcon.vue";
-import issuesIcon from "@/components/images//issuesIcon.vue";
+import issuesIcon from "@/components/images/issuesIcon.vue";
+import tasksIcon from "@/components/images/tasksIcon.vue";
 import iconDashboard from "@/assets/images/dashboard.svg";
 import iconIssues from "@/assets/images/issues.svg";
+import iconTasks from "@/assets/images/tasks.svg";
 export default {
   name: "HomeHeader",
   data() {
@@ -60,6 +65,7 @@ export default {
           img_alt: "Панель",
           name: "Панель",
           component: "graph",
+          rule: "user",
         },
         {
           icon: markRaw(issuesIcon),
@@ -67,13 +73,22 @@ export default {
           img_alt: "Участники",
           name: "Участники",
           component: "users",
+          rule: "admin",
+        },
+        {
+          icon: markRaw(tasksIcon),
+          img: iconTasks,
+          img_alt: "Задачи",
+          name: "Задачи",
+          component: "tasks",
+          rule: "user",
         },
       ],
     };
   },
   methods: {
     readPath(item) {
-      return this.activeComponent == item ? "#B1C7DF" : "#FFF";
+      return this.activeComponent == item ? "#B1C7DF" : "#fff";
     },
     readClass(item) {
       return this.activeComponent == item;
@@ -115,7 +130,7 @@ export default {
     font-family: "Inter500";
     font-size: 14px;
     letter-spacing: 0.1px;
-    color: #ffffff;
+    color: $text;
     cursor: pointer;
     position: relative;
     &::after {

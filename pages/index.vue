@@ -13,7 +13,7 @@
       @changeComponent="changeComponent"
     />
     <div class="container__home">
-      <div class="home__top">
+      <div class="home__top" v-if="activeComponent == 'graph'">
         <div class="home__top-sorting">
           <button class="home__top-sorting__button">
             <p>10th May - 16th May 2021</p>
@@ -40,6 +40,7 @@ import { storeAuth } from "~/store/Auth";
 import { storeData } from "~/store/Data";
 import graph from "~/components/Graph/Graph.vue";
 import users from "~/components/Users/Users.vue";
+import tasks from "~/components/Tasks/Tasks.vue";
 export default {
   name: "PageIndex",
   data() {
@@ -112,6 +113,7 @@ export default {
   components: {
     graph,
     users,
+    tasks,
   },
 };
 </script>
@@ -140,7 +142,7 @@ export default {
       text-align: center;
       letter-spacing: 0.75px;
       text-transform: uppercase;
-      color: #ffffff;
+      color: $text;
     }
   }
   &-sorting__button {
@@ -156,7 +158,7 @@ export default {
     p {
       font-size: 14px;
       letter-spacing: 0.005em;
-      color: #ffffff;
+      color: $text;
     }
   }
   h1 {
@@ -164,7 +166,7 @@ export default {
     font-size: 34px;
     text-align: center;
     letter-spacing: 0.25px;
-    color: #ffffff;
+    color: $text;
   }
 }
 .home_component-enter-active,

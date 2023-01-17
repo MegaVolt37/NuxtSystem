@@ -1,6 +1,11 @@
 <template>
   <div class="list-wrapper">
-    <div class="list" @scroll="scrollBlock" ref="listBlock">
+    <div
+      class="list"
+      @scroll="scrollBlock"
+      ref="listBlock"
+      :style="styleListRows"
+    >
       <div class="list__top">
         <div class="list__top-sorting">
           <div
@@ -80,29 +85,26 @@
       </div>
     </div>
     <div class="list__bottom">
-      <div class="list__bottom-pagination">
-        <button class="list__bottom-pagination__left">
-          <img
-            src="@/assets/images/arrowPagination.svg"
-            alt="Предыдущая страница"
-          />
-        </button>
-        <div class="list__bottom-pagination__count">
-          <span class="list__bottom-pagination__count-prev">1</span>
-          <span class="list__bottom-pagination__count-current">2</span>
-          <span class="list__bottom-pagination__count-next">3</span>
-        </div>
-        <button class="list__bottom-pagination__right">
-          <img
-            src="@/assets/images/arrowPagination.svg"
-            alt="Следующая страница"
-          />
-        </button>
-      </div>
       <div class="list__bottom-rows">
         <p>Rows per page</p>
-        <button><span>1</span><img src="@/assets/images/arrowFilter.svg" alt="" /></button>
-        <div></div>
+        <button @click="showBlockRows">
+          <span>{{ activeRows }}</span
+          ><img
+            src="@/assets/images/arrowFilter.svg"
+            alt=""
+            :style="styleButtonRows"
+          />
+        </button>
+        <transition name="rows_block">
+          <div class="list__bottom-rows__list" v-if="isShowBlockRows">
+            <span
+              v-for="(item, index) in rows"
+              :key="index"
+              @click="changeActiveRows(item.count)"
+              >{{ item.count }}</span
+            >
+          </div>
+        </transition>
       </div>
     </div>
   </div>
@@ -280,11 +282,27 @@ export default {
         },
       ],
       scrolling: false,
+      rows: [
+        { count: 1 },
+        { count: 2 },
+        { count: 3 },
+        { count: 4 },
+        { count: 5 },
+        { count: 6 },
+      ],
+      isShowBlockRows: false,
+      activeRows: 5,
     };
   },
   computed: {
     styleScrollSorting() {
       return this.scrolling ? "position: sticky; top: 0;" : null;
+    },
+    styleButtonRows() {
+      return this.isShowBlockRows ? "transform: rotateZ(180deg);" : null;
+    },
+    styleListRows() {
+      return `max-height: ${89 + 40 * this.activeRows}px`;
     },
   },
   methods: {
@@ -305,6 +323,13 @@ export default {
       this.scrolling = this.$refs.listBlock.scrollTop;
       this.$emit("scrollBlock", this.scrolling);
     },
+    showBlockRows() {
+      this.isShowBlockRows = !this.isShowBlockRows;
+    },
+    changeActiveRows(value) {
+      this.activeRows = value;
+      this.isShowBlockRows = false;
+    },
   },
   emits: ["scrollBlock"],
 };
@@ -318,10 +343,9 @@ export default {
   grid-template-columns: max-content 2fr 1fr 1fr 2fr 2fr 1fr 1fr;
   align-items: center;
   overflow-y: auto;
-  max-height: 370px;
+  max-height: 329px;
   padding-right: 20px;
-  // scroll-behavior: smooth;
-  // -webkit-overflow-scrolling: touch;
+  transition: all .5s ease-in-out;
   &__top {
     display: contents;
     &-sorting {
@@ -337,7 +361,7 @@ export default {
       p {
         font-size: 16px;
         letter-spacing: 0.01em;
-        color: #ffffff;
+        color: $text;
       }
       &-buttons {
         display: grid;
@@ -427,7 +451,7 @@ export default {
       span {
         font-size: 14px;
         letter-spacing: 0.005em;
-        color: #ffffff;
+        color: $text;
       }
       &__title {
         display: flex;
@@ -485,6 +509,126 @@ export default {
           &.dots + .dots {
             margin-left: 5px;
           }
+        }
+      }
+    }
+  }
+  &__bottom {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    &-pagination {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      button {
+        cursor: pointer;
+        background-color: transparent;
+        width: 30px;
+        height: 30px;
+        border: 1px solid #fff;
+        border-radius: 10px;
+      }
+      &__right {
+        img {
+          transform: rotateZ(180deg);
+        }
+      }
+      &__count {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        &-current {
+          font-size: 16px;
+          letter-spacing: 0.01em;
+          color: $text;
+        }
+        &-prev,
+        &-next {
+          font-size: 14px;
+          letter-spacing: 0.005em;
+          color: #9290fe;
+          cursor: pointer;
+        }
+      }
+    }
+    &-rows {
+      position: relative;
+      margin-top: 45px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      p {
+        font-size: 14px;
+        letter-spacing: 0.25px;
+        color: $text;
+      }
+      button {
+        cursor: pointer;
+        background-color: transparent;
+        width: 60px;
+        height: 30px;
+        border: 1px solid #fff;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        span {
+          font-size: 14px;
+          letter-spacing: 0.005em;
+          color: $text;
+        }
+        img {
+          transition: all 0.5s ease-in-out;
+          // transform: rotateZ(180deg);
+        }
+      }
+      &__list {
+        position: absolute;
+        right: 0;
+        bottom: 35px;
+        border: 1px solid #fff;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 60px;
+        border-radius: 10px;
+        z-index: 3;
+        background-color: #262626;
+        span {
+          font-size: 14px;
+          letter-spacing: 0.005em;
+          color: $text;
+          border-bottom: 1px solid #fff;
+          width: 100%;
+          display: block;
+          text-align: center;
+          padding-bottom: 5px;
+          margin-bottom: 5px;
+          cursor: pointer;
+        }
+        span:last-child {
+          border-bottom: none;
+          padding-bottom: 0;
+          margin-bottom: 0;
+        }
+      }
+      .rows_block-enter-active {
+        animation: toggle-rows 0.5s ease-in-out 0s both;
+      }
+      .rows_block-leave-active {
+        animation: toggle-rows 0.5s ease-in-out 0s reverse;
+      }
+      @keyframes toggle-rows {
+        0% {
+          transform: translateY(20%);
+          opacity: 0;
+        }
+        100% {
+          transform: translateY(0);
+          opacity: 1;
         }
       }
     }
