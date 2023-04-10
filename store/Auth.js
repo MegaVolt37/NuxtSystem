@@ -32,7 +32,7 @@ export const storeAuth = defineStore('auth', {
         console.error(error)
       }
     },
-    async logout() {
+    logout() {
       const user = useCookie('user')
       const token = useCookie('token')
       user.value = null

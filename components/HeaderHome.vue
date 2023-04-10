@@ -2,28 +2,15 @@
   <div class="home__header-wrapper">
     <nav class="home__header-nav">
       <ul class="home__header-nav__list">
-        <li
-          class="home__header-nav__link"
-          v-for="(item, index) in links"
-          :key="index"
-          v-show="item.rule != ''"
-        >
-          <p
-            v-if="item.rule != ''"
-            :class="{ active: readClass(item.component) }"
-            :style="'color: ' + readPath(item.component)"
-            @click="$emit('changeComponent', item.component)"
-          >
-            <component
-              :path_fill="readPath(item.component)"
-              :is="item.icon"
-            ></component
-            >{{ item.name }}
+        <li class="home__header-nav__link" v-for="(item, index) in links" :key="index" v-show="item.rule != ''">
+          <p v-if="item.rule != ''" :class="{ active: readClass(item.component) }"
+            :style="'color: ' + readPath(item.component)" @click="$emit('changeComponent', item.component)">
+            <component :path_fill="readPath(item.component)" :is="item.icon"></component>{{ item.name }}
           </p>
         </li>
       </ul>
     </nav>
-    <div class="home__header-panel">
+    <div class="home__header-panel" @click="logout">
       <img src="@/assets/images/search.svg" alt="Поиск" />
       <img src="@/assets/images/message.svg" alt="Сообщение" />
       <div class="home__header-panel__notice">
@@ -32,67 +19,68 @@
       <div class="home__header-panel__profile">
         <p>Faez</p>
         <span>Premium</span>
-        <img
-          class="home__header-panel__profile-img"
-          src="@/assets/images/profile.png"
-          alt="Изображение профиля"
-        />
-        <img
-          class="home__header-panel__profile-arrow"
-          src="@/assets/images/arrow.svg"
-          alt="Стрелка"
-        />
+        <img class="home__header-panel__profile-img" src="@/assets/images/profile.png" alt="Изображение профиля" />
+        <img class="home__header-panel__profile-arrow" src="@/assets/images/arrow.svg" alt="Стрелка" />
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import dashboardIcon from "@/components/images/dashboardIcon.vue";
 import issuesIcon from "@/components/images/issuesIcon.vue";
 import tasksIcon from "@/components/images/tasksIcon.vue";
 import iconDashboard from "@/assets/images/dashboard.svg";
 import iconIssues from "@/assets/images/issues.svg";
 import iconTasks from "@/assets/images/tasks.svg";
+import { storeAuth } from "~/store/Auth";
+interface link {
+  icon: any,
+  img: string,
+  img_alt: string,
+  name: string,
+  component: string,
+  rule: string,
+}
+type nameComponent = 'graph' | 'users' | 'tasks';
 export default {
   name: "HomeHeader",
-  data() {
-    return {
-      links: [
-        {
-          icon: markRaw(dashboardIcon),
-          img: iconDashboard,
-          img_alt: "Панель",
-          name: "Панель",
-          component: "graph",
-          rule: "user",
-        },
-        {
-          icon: markRaw(issuesIcon),
-          img: iconIssues,
-          img_alt: "Участники",
-          name: "Участники",
-          component: "users",
-          rule: "admin",
-        },
-        {
-          icon: markRaw(tasksIcon),
-          img: iconTasks,
-          img_alt: "Задачи",
-          name: "Задачи",
-          component: "tasks",
-          rule: "user",
-        },
-      ],
+  setup(props,) {
+    const store = storeAuth();
+    const links: link[] = [
+      {
+        icon: markRaw(dashboardIcon),
+        img: iconDashboard,
+        img_alt: "Панель",
+        name: "Панель",
+        component: "graph",
+        rule: "user",
+      },
+      {
+        icon: markRaw(issuesIcon),
+        img: iconIssues,
+        img_alt: "Участники",
+        name: "Участники",
+        component: "users",
+        rule: "admin",
+      },
+      {
+        icon: markRaw(tasksIcon),
+        img: iconTasks,
+        img_alt: "Задачи",
+        name: "Задачи",
+        component: "tasks",
+        rule: "user",
+      },
+    ];
+    const logout = (): void => store.logout();
+    const readPath = (item: string): string => {
+      return props.activeComponent == item ? "#B1C7DF" : "#fff";
     };
-  },
-  methods: {
-    readPath(item) {
-      return this.activeComponent == item ? "#B1C7DF" : "#fff";
-    },
-    readClass(item) {
-      return this.activeComponent == item;
-    },
+    const readClass = (item: string): boolean => {
+      return props.activeComponent == item;
+    };
+    return { store, links, logout, readPath, readClass }
   },
   props: {
     activeComponent: String,
@@ -109,21 +97,25 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
 .home__header-nav {
   margin-right: auto;
+
   &__list {
     display: flex;
     align-items: center;
     gap: 35px;
   }
-  &__link {
-  }
+
+  &__link {}
+
   &__link:first-child a {
     svg {
       margin: -2px 0;
       margin-right: 5px;
     }
   }
+
   &__link p {
     display: flex;
     align-items: center;
@@ -133,6 +125,7 @@ export default {
     color: $text;
     cursor: pointer;
     position: relative;
+
     &::after {
       position: absolute;
       content: "";
@@ -145,31 +138,39 @@ export default {
       bottom: -6px;
       transition: all 0.3s ease-in-out;
     }
+
     &:hover::after {
       width: 100%;
     }
+
     svg {
       margin-right: 5px;
     }
   }
+
   &__link p.active {
     &::after {
       width: 100%;
     }
   }
 }
+
 .home__header-panel {
   display: flex;
   align-items: center;
   gap: 25px;
+
   img {
     cursor: pointer;
   }
+
   &__notice {
     cursor: pointer;
   }
+
   &__notice.notice {
     position: relative;
+
     &::after {
       position: absolute;
       content: "";
@@ -181,16 +182,19 @@ export default {
       right: 0;
     }
   }
+
   &__profile {
     display: grid;
     align-items: center;
     column-gap: 6px;
+
     &-arrow {
       cursor: pointer;
       grid-column: 3;
       grid-row: 1/3;
       margin-left: 15px;
     }
+
     &-img {
       width: 48px;
       height: 48px;
@@ -199,6 +203,7 @@ export default {
       grid-row: 1/3;
       margin-left: 10px;
     }
+
     p {
       text-align: right;
       grid-column: 1;
@@ -208,6 +213,7 @@ export default {
       letter-spacing: 0.1px;
       color: #e2e6f8;
     }
+
     span {
       text-align: right;
       grid-column: 1;

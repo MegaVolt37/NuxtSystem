@@ -5,23 +5,17 @@
       <div class="modal-inputs">
         <slot></slot>
       </div>
-      <span @click="closeModal"
-        ><img
-          src="StaticWindow.iconClose.icon"
-          alt="StaticWindow.iconClose.alt"
-          width="12"
-          height="12"
-      /></span>
+      <span @click="closeModal"><img src="StaticWindow.iconClose.icon" alt="StaticWindow.iconClose.alt" width="12"
+          height="12" /></span>
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
-  methods: {
-    closeModal() {
-      this.$emit("closeModal");
-    },
+  setup(props, { emit }) {
+    const closeModal = (): void => emit("closeModal");
+    return { closeModal }
   },
   emits: ["closeModal"],
 };
@@ -40,11 +34,13 @@ export default {
   padding: 0;
   overflow-y: auto;
   display: flex;
+
   .close-modal {
     height: 100%;
     width: 100%;
     position: fixed;
   }
+
   .modal-content {
     width: 605px;
     position: relative;
@@ -55,10 +51,12 @@ export default {
     border-radius: 6px;
     height: fit-content;
   }
+
   .modal-inputs {
     max-width: 605px;
     margin: 0 auto;
   }
+
   span {
     position: absolute;
     top: 0;
@@ -68,6 +66,7 @@ export default {
     cursor: pointer;
   }
 }
+
 @media (max-width: 1250px) {
   .modal-wrapper {
     .modal-content {
@@ -76,6 +75,7 @@ export default {
     }
   }
 }
+
 @media (max-width: 600px) {
   .modal-wrapper {
     .modal-content {
@@ -88,3 +88,7 @@ export default {
   }
 }
 </style>
+
+function $emit(arg0: string): void {
+  throw new Error('Function not implemented.');
+}

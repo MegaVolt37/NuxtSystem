@@ -5,7 +5,7 @@ export const fetchAuth = (url: string, opts?: FetchOptions) => {
   const config = useRuntimeConfig()
   const err = storeError()
   const auth = storeAuth()
-  const baseUrl = config.public.baseURL
+  const baseUrl = config.public.baseURL || 'http://localhost:5000'
   const tokenState = useState('token')
   const headers: HeadersInit = {
     ...(opts?.headers || {}),

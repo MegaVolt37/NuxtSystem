@@ -1,4 +1,4 @@
-export const isLogin = () => {
+export const isLogin = ():boolean => {
   const stateUser = useState('user')
   return stateUser.value ? true : false;
 };
