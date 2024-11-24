@@ -1,13 +1,26 @@
 <template>
   <div class="select">
     <span class="select__title">{{ title }}</span>
-    <div class="select__options-wrapper" v-click-outside="closeOptions">
-      <span class="select__options-title" @click="openOptions">{{
+    <div
+      class="select__options-wrapper"
+      v-click-outside="closeOptions"
+    >
+      <span
+        class="select__options-title"
+        @click="openOptions"
+      >{{
         readTitle
       }}</span>
       <transition name="select_options">
-        <div class="select__options" v-if="isOpenOptions">
-          <span v-for="(option, index) in selects" :key="index" @click="selectOption(option)">{{ option.title }}</span>
+        <div
+          class="select__options"
+          v-if="isOpenOptions"
+        >
+          <span
+            v-for="(option, index) in selects"
+            :key="index"
+            @click="selectOption(option)"
+          >{{ option.title }}</span>
         </div>
       </transition>
     </div>

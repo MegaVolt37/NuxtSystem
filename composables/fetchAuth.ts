@@ -1,24 +1,24 @@
 import { FetchOptions } from "ohmyfetch";
-import { storeError } from '~/store/Error';
-import { storeAuth } from '~/store/Auth';
-export const fetchAuth = (url: string, opts?: FetchOptions) => {
+
+export const fetchAuth = (url: string, opts?: FetchOptions): Promise<unknown> => {
   const config = useRuntimeConfig()
-  const err = storeError()
-  const auth = storeAuth()
+  const {setError} = useStoreError()
+  const { logout } = useStoreAuth()
+  const {getToken} = storeToRefs(useStoreAuth())
   const baseUrl = config.public.baseURL || 'http://localhost:5000'
-  const tokenState = useState('token')
   const headers: HeadersInit = {
     ...(opts?.headers || {}),
-    ...(tokenState && { Authorization: `Bearer ${tokenState.value}` }),
+    ...(getToken.value && { Authorization: `Bearer ${getToken.value}` }),
   };
   return $fetch(baseUrl + url, { ...opts, headers })
     .catch((e) => {
       if (e.status === 403) {
-        auth.logout();
+        logout();
       } else {
-        err.setError(e)
+        setError(e)
+
         setTimeout(() => {
-          err.setError("")
+          setError("")
         }, 3000);
       }
     });

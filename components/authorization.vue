@@ -18,7 +18,10 @@
           />
         </div>
         <span class="auth__form-forgot">Forgot Password?</span>
-        <button class="auth__form-send" @click.prevent="sendForm">Login</button>
+        <button
+          class="auth__form-send"
+          @click.prevent="sendForm"
+        >Login</button>
       </form>
       <img
         class="auth__content-close"
@@ -33,7 +36,7 @@
 import { required } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
 import { mapActions } from "pinia";
-import { storeAuth } from "~/store/Auth";
+import { storeAuth } from "~~/store/Auth";
 export default {
   name: "Authorization",
   data() {
@@ -104,6 +107,7 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
   &__content {
     position: relative;
     background: $light-black;
@@ -119,6 +123,7 @@ export default {
     padding: 0 55px;
     display: grid;
     align-items: center;
+
     &-close {
       cursor: pointer;
       position: absolute;
@@ -126,20 +131,24 @@ export default {
       bottom: 20px;
     }
   }
+
   .auth__form {
     &-fields {
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       &:last-child {
         margin-top: 30px;
       }
+
       p {
         font-size: 12px;
         letter-spacing: 0.2em;
         text-transform: uppercase;
         color: $gray-text;
       }
+
       input {
         flex: 0 1 60%;
         font-family: "Inter700";
@@ -149,21 +158,26 @@ export default {
         border-radius: 12px;
         padding: 15px 20px;
         transition: all 0.3s ease-in-out;
+
         &:focus {
           outline: none;
         }
       }
+
       input.error {
         border-color: red;
+
         &::placeholder {
           color: red;
           font-size: 12px;
         }
       }
     }
+
     &-fields:nth-child(2) {
       margin-top: 50px;
     }
+
     &-forgot {
       cursor: pointer;
       font-family: "Inter500";
@@ -176,6 +190,7 @@ export default {
       margin-left: auto;
       width: 59%;
     }
+
     &-send {
       cursor: pointer;
       background: $green;

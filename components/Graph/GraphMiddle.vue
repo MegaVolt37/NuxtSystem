@@ -1,37 +1,109 @@
 <template>
   <div class="graph__middle">
-    <div class="graph__middle-item" v-for="(item, index) in 3" :key="index" :style="readStyle(index)">
-      <div class="graph__middle-item__panel" :style="panelStyle(index)">
-        <div class="graph__middle-item__panel-title" v-if="index > 0">
+    <div
+      class="graph__middle-item"
+      v-for="(item, index) in 3"
+      :key="index"
+      :style="readStyle(index)"
+    >
+      <div
+        class="graph__middle-item__panel"
+        :style="panelStyle(index)"
+      >
+        <div
+          class="graph__middle-item__panel-title"
+          v-if="index > 0"
+        >
           <p>Curve line</p>
           <span>May to June 2021</span>
         </div>
-        <img @click="openShare(index)" src="@/assets/images/share.svg" alt="Поделиться" />
-        <img src="@/assets/images/cloud.svg" alt="Хранилище" />
-        <img src="@/assets/images/settings.svg" alt="Настройки" />
+        <img
+          @click="openShare(index)"
+          src="@/assets/images/share.svg"
+          alt="Поделиться"
+        />
+        <img
+          src="@/assets/images/cloud.svg"
+          alt="Хранилище"
+        />
+        <img
+          src="@/assets/images/settings.svg"
+          alt="Настройки"
+        />
       </div>
-      <div v-if="index == 0" class="pie" width="auto" height="auto">
-        <Pie id="pie" :data="chartDataProps" :options="options" width="auto" height="auto" />
+      <div
+        v-if="index == 0"
+        class="pie"
+        width="auto"
+        height="auto"
+      >
+        <Pie
+          id="pie"
+          :data="chartDataProps"
+          :options="options"
+          width="auto"
+          height="auto"
+        />
       </div>
-      <div v-if="index == 1" class="line" width="auto" height="auto">
-        <Line :data="lineData" :options="optionsLine" width="auto" height="auto" />
+      <div
+        v-if="index == 1"
+        class="line"
+        width="auto"
+        height="auto"
+      >
+        <Line
+          :data="lineData"
+          :options="optionsLine"
+          width="auto"
+          height="auto"
+        />
       </div>
-      <div v-if="index == 2" class="bar" width="auto" height="auto">
-        <Bar :data="lineBar" :options="optionsLine" width="auto" height="auto" />
+      <div
+        v-if="index == 2"
+        class="bar"
+        width="auto"
+        height="auto"
+      >
+        <Bar
+          :data="lineBar"
+          :options="optionsLine"
+          width="auto"
+          height="auto"
+        />
       </div>
-      <div class="graph__middle-item__description" v-if="index == 0">
-        <div class="description__item" v-for="(item, index) in graph_info" :key="index">
+      <div
+        class="graph__middle-item__description"
+        v-if="index == 0"
+      >
+        <div
+          class="description__item"
+          v-for="(item, index) in graph_info"
+          :key="index"
+        >
           <span :style="colorTitle(index)"></span>
           <p>{{ item.title }}</p>
         </div>
       </div>
-      <img class="graph__middle-item__show" src="@/assets/images/showMore.svg" alt="Развернуть"
-        @click="increateSize(index)" />
+      <img
+        class="graph__middle-item__show"
+        src="@/assets/images/showMore.svg"
+        alt="Развернуть"
+        @click="increateSize(index)"
+      />
       <transition name="fade">
-        <div class="graph__middle-item__share" v-show="isOpenShare === index">
-          <div class="ya-share2" data-curtain data-shape="round"
-            data-services="vkontakte,odnoklassniki,telegram,twitter,viber,whatsapp" data-title="Заголовок ссылки"
-            data-url="http://localhost:3000/" data-image="null"></div>
+        <div
+          class="graph__middle-item__share"
+          v-show="isOpenShare === index"
+        >
+          <div
+            class="ya-share2"
+            data-curtain
+            data-shape="round"
+            data-services="vkontakte,odnoklassniki,telegram,twitter,viber,whatsapp"
+            data-title="Заголовок ссылки"
+            data-url="http://localhost:3000/"
+            data-image="null"
+          ></div>
         </div>
       </transition>
     </div>
@@ -39,22 +111,22 @@
 </template>
 
 <script>
-import { mapActions } from "pinia";
-import { storeData } from "~/store/Data";
-import { Pie, Line, Bar } from "vue-chartjs";
 import {
+  ArcElement,
+  BarElement,
+  CategoryScale,
   Chart as ChartJS,
+  Filler,
+  Legend,
+  LinearScale,
+  LineElement,
+  PointElement,
   Title,
   Tooltip,
-  Legend,
-  ArcElement,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  BarElement,
-  LineElement,
-  Filler,
 } from "chart.js";
+import { mapActions } from "pinia";
+import { Bar, Line, Pie } from "vue-chartjs";
+import { useStoreData } from "~/store/Modal";
 
 ChartJS.register(
   Title,
@@ -156,7 +228,7 @@ export default defineNuxtComponent({
     };
   },
   methods: {
-    ...mapActions(storeData, ["setModal"]),
+    ...mapActions(useStoreData, ["setModal"]),
     readStyle(index) {
       return this.isCreated === index
         ? "max-height: 500px; height: 500px;"

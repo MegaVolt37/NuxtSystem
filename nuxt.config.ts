@@ -4,36 +4,34 @@ export default defineNuxtConfig({
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: '@use "@/assets/scss/global.scss" as *;'
+          additionalData: '@use "~/assets/scss/global.scss" as *;'
         }
       }
     }
   },
+
   // runtimeConfig: {
   //   public: {
   //     baseURL: process.env.BASE_URL || 'http://localhost:5000',
   //   },
   // },
   css: ['normalize.css/normalize.css'],
+
   modules: [
-    // ...
-    [
-      '@pinia/nuxt',
-      {
-        autoImports: [
-          // automatically imports `defineStore`
-          'defineStore', // import { defineStore } from 'pinia'
-          // automatically imports `defineStore` as `definePiniaStore`
-          ['defineStore', 'definePiniaStore'], // import { defineStore as definePiniaStore } from 'pinia'
-        ],
-      },
-    ],
     '@nuxtjs/device',
     'nuxt-socket-io',
+    '@pinia/nuxt',
+    'pinia-plugin-persistedstate/nuxt',
   ],
+
+  pinia: {
+    storesDirs: ['./stores/**', './store/**'],
+  },
+
   device: {
     refreshOnResize: true
   },
+
   io: {
     sockets: [
       {
@@ -42,4 +40,6 @@ export default defineNuxtConfig({
       }
     ]
   },
+
+  compatibilityDate: '2024-11-24',
 })

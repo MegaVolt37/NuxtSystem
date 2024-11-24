@@ -11,13 +11,15 @@
         class="pagination__count-prev"
         v-for="(count, index) in users.length / 3"
         :key="index"
-        >1</span
-      >
+      >1</span>
       <span class="pagination__count-current">2</span>
       <span class="pagination__count-next">3</span>
     </div>
     <button class="pagination__right">
-      <img src="@/assets/images/arrowPagination.svg" alt="Следующая страница" />
+      <img
+        src="@/assets/images/arrowPagination.svg"
+        alt="Следующая страница"
+      />
     </button>
   </div>
 </template>
@@ -26,6 +28,4 @@
 export default {};
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

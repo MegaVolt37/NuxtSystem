@@ -22,7 +22,10 @@
           width="50"
           height="50"
         />
-        <span class="chat__messages-item__text" :style="readStyleUser(item)">{{
+        <span
+          class="chat__messages-item__text"
+          :style="readStyleUser(item)"
+        >{{
           item.messages
         }}</span>
       </div>
@@ -34,7 +37,10 @@
         v-model="text"
         placeholder="Введите текст"
       />
-      <button class="chat__send-btn" @click="sendMessage">Отправить</button>
+      <button
+        class="chat__send-btn"
+        @click="sendMessage"
+      >Отправить</button>
     </div>
   </div>
 </template>
@@ -106,12 +112,14 @@ export default {
   width: 100%;
   height: 100%;
   z-index: 10;
+
   &__close {
     cursor: pointer;
     position: absolute;
     right: 25px;
     top: 25px;
   }
+
   &__messages {
     display: flex;
     flex-direction: column;
@@ -119,13 +127,15 @@ export default {
     overflow: auto;
     max-height: 80%;
   }
+
   &__messages-item {
     display: flex;
     align-items: center;
     gap: 10px;
     max-width: 50%;
-    &__img {
-    }
+
+    &__img {}
+
     &__text {
       font-size: 14px;
       color: $text;
@@ -137,6 +147,7 @@ export default {
       border-radius: 0px 24px 24px 24px;
     }
   }
+
   .chat__send {
     position: absolute;
     bottom: 30px;
@@ -145,6 +156,7 @@ export default {
     display: flex;
     align-self: center;
     gap: 20px;
+
     &-input {
       padding: 0 15px;
       width: 100%;
@@ -156,6 +168,7 @@ export default {
       font-size: 15px;
       color: $text;
     }
+
     &-btn {
       cursor: pointer;
       max-width: 130px;

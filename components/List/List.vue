@@ -1,69 +1,129 @@
 <template>
   <div class="list-wrapper">
-    <div class="list" @scroll="scrollBlock" ref="listBlock" :style="styleListRows">
+    <div
+      class="list"
+      @scroll="scrollBlock"
+      ref="listBlock"
+      :style="styleListRows"
+    >
       <div class="list__top">
         <div class="list__top-sorting">
-          <div class="list__top-sorting__item" v-for="(item, index) in sorting" :key="index"
-            :style="styleScrollSorting ?? undefined">
+          <div
+            class="list__top-sorting__item"
+            v-for="(item, index) in sorting"
+            :key="index"
+            :style="styleScrollSorting ?? undefined"
+          >
             <p>{{ item.name }}</p>
             <div class="list__top-sorting__item-buttons">
               <div @click="sortingUp(item)">
-                <img src="@/assets/images/arrowFilter.svg" alt="Сортировка по возрастанию" />
+                <img
+                  src="@/assets/images/arrowFilter.svg"
+                  alt="Сортировка по возрастанию"
+                />
               </div>
 
               <div @click="sortingDown(item)">
-                <img src="@/assets/images/arrowFilter.svg" alt="Сортировка по убыванию" />
+                <img
+                  src="@/assets/images/arrowFilter.svg"
+                  alt="Сортировка по убыванию"
+                />
               </div>
             </div>
           </div>
         </div>
         <div class="list__top-filters">
-          <div class="list__top-filters__item" v-for="(item, index) in filters" :key="index">
+          <div
+            class="list__top-filters__item"
+            v-for="(item, index) in filters"
+            :key="index"
+          >
             <p>{{ item.name }}</p>
-            <div class="list__top-filters__item-buttons" v-if="item.value">
+            <div
+              class="list__top-filters__item-buttons"
+              v-if="item.value"
+            >
               <div @click="sortingUp(item)">
-                <img src="@/assets/images/arrowFilter.svg" alt="Сортировка по возрастанию" />
+                <img
+                  src="@/assets/images/arrowFilter.svg"
+                  alt="Сортировка по возрастанию"
+                />
               </div>
 
               <div @click="sortingDown(item)">
-                <img src="@/assets/images/arrowFilter.svg" alt="Сортировка по убыванию" />
+                <img
+                  src="@/assets/images/arrowFilter.svg"
+                  alt="Сортировка по убыванию"
+                />
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="list__middle">
-        <div class="list__middle-item" v-for="user in users" :key="user.id">
+        <div
+          class="list__middle-item"
+          v-for="user in users"
+          :key="user.id"
+        >
           <span class="list__middle-item__index">{{ user.id }}</span>
           <div class="list__middle-item__title">
-            <img src="" alt="" width="40" height="40" />
+            <img
+              src=""
+              alt=""
+              width="40"
+              height="40"
+            />
             <span @click="openChat">{{ user.name }}</span>
           </div>
           <span class="list__middle-item__status">{{ user.status }}</span>
           <span class="list__middle-item__team">{{ user.team }}</span>
           <span class="list__middle-item__priority">{{ user.priority }}</span>
           <div class="list__middle-item__employee">
-            <img src="" alt="" width="24" height="24" />
+            <img
+              src=""
+              alt=""
+              width="24"
+              height="24"
+            />
             <span>{{ user.employee }}</span>
           </div>
           <span class="list__middle-item__date">{{ user.date }}</span>
           <div class="list__middle-item__action">
-            <span class="dots" v-for="index in 3" :key="index" @click="openAction">
+            <span
+              class="dots"
+              v-for="index in 3"
+              :key="index"
+              @click="openAction"
+            >
             </span>
           </div>
         </div>
       </div>
     </div>
     <div class="list__bottom">
-      <div class="list__bottom-rows" v-click-outside="closeBlockRows">
+      <div
+        class="list__bottom-rows"
+        v-click-outside="closeBlockRows"
+      >
         <p>Rows per page</p>
         <button @click="showBlockRows">
-          <span>{{ readActiveRows }}</span><img src="@/assets/images/arrowFilter.svg" alt=""
-            :style="styleButtonRows ?? undefined" />
+          <span>{{ readActiveRows }}</span><img
+            src="@/assets/images/arrowFilter.svg"
+            alt=""
+            :style="styleButtonRows ?? undefined"
+          />
         </button>
         <transition name="rows_block">
-          <div class="list__bottom-rows__list" v-if="readShowBlockRows">
-            <span v-for="(item, index) in rows" :key="index" @click="changeActiveRows(item.count)">{{ item.count }}</span>
+          <div
+            class="list__bottom-rows__list"
+            v-if="readShowBlockRows"
+          >
+            <span
+              v-for="(item, index) in rows"
+              :key="index"
+              @click="changeActiveRows(item.count)"
+            >{{ item.count }}</span>
           </div>
         </transition>
       </div>

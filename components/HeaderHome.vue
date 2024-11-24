@@ -2,25 +2,57 @@
   <div class="home__header-wrapper">
     <nav class="home__header-nav">
       <ul class="home__header-nav__list">
-        <li class="home__header-nav__link" v-for="(item, index) in links" :key="index" v-show="item.rule != ''">
-          <p v-if="item.rule != ''" :class="{ active: readClass(item.component) }"
-            :style="'color: ' + readPath(item.component)" @click="$emit('changeComponent', item.component)">
-            <component :path_fill="readPath(item.component)" :is="item.icon"></component>{{ item.name }}
+        <li
+          class="home__header-nav__link"
+          v-for="(item, index) in links"
+          :key="index"
+          v-show="item.rule != ''"
+        >
+          <p
+            v-if="item.rule != ''"
+            :class="{ active: readClass(item.component) }"
+            :style="'color: ' + readPath(item.component)"
+            @click="$emit('changeComponent', item.component)"
+          >
+            <component
+              :path_fill="readPath(item.component)"
+              :is="item.icon"
+            ></component>{{ item.name }}
           </p>
         </li>
       </ul>
     </nav>
-    <div class="home__header-panel" @click="logout">
-      <img src="@/assets/images/search.svg" alt="Поиск" />
-      <img src="@/assets/images/message.svg" alt="Сообщение" />
+    <div
+      class="home__header-panel"
+      @click="logout"
+    >
+      <img
+        src="@/assets/images/search.svg"
+        alt="Поиск"
+      />
+      <img
+        src="@/assets/images/message.svg"
+        alt="Сообщение"
+      />
       <div class="home__header-panel__notice">
-        <img src="@/assets/images/notice.svg" alt="Уведомления" />
+        <img
+          src="@/assets/images/notice.svg"
+          alt="Уведомления"
+        />
       </div>
       <div class="home__header-panel__profile">
         <p>Faez</p>
         <span>Premium</span>
-        <img class="home__header-panel__profile-img" src="@/assets/images/profile.png" alt="Изображение профиля" />
-        <img class="home__header-panel__profile-arrow" src="@/assets/images/arrow.svg" alt="Стрелка" />
+        <img
+          class="home__header-panel__profile-img"
+          src="@/assets/images/profile.png"
+          alt="Изображение профиля"
+        />
+        <img
+          class="home__header-panel__profile-arrow"
+          src="@/assets/images/arrow.svg"
+          alt="Стрелка"
+        />
       </div>
     </div>
   </div>
@@ -33,7 +65,7 @@ import tasksIcon from "@/components/images/tasksIcon.vue";
 import iconDashboard from "@/assets/images/dashboard.svg";
 import iconIssues from "@/assets/images/issues.svg";
 import iconTasks from "@/assets/images/tasks.svg";
-import { storeAuth } from "~/store/Auth";
+import { storeAuth } from "~~/store/Auth";
 interface link {
   icon: any,
   img: string,

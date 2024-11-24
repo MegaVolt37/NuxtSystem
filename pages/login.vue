@@ -2,15 +2,33 @@
   <div class="auth">
     <div class="auth__content">
       <form class="auth__form">
-        <div class="auth__form-fields" v-for="item in formState" :key="item?.name">
+        <div
+          class="auth__form-fields"
+          v-for="item in formState"
+          :key="item?.name"
+        >
           <p>{{ item?.name }}</p>
-          <input v-model="item.value" :type="item?.type" :class="{ error: errorClass(item) }" @input="writeForm(item)"
-            :placeholder="errorTextInput(item)" autocomplete="new-password" @blur="writeForm(item)" />
+          <input
+            v-model="item.value"
+            :type="item?.type"
+            :class="{ error: errorClass(item) }"
+            @input="writeForm(item)"
+            :placeholder="errorTextInput(item)"
+            autocomplete="new-password"
+            @blur="writeForm(item)"
+          />
         </div>
         <span class="auth__form-forgot">Forgot Password?</span>
-        <button class="auth__form-send" @click.prevent="sendForm">Login</button>
+        <button
+          class="auth__form-send"
+          @click.prevent="sendForm"
+        >Login</button>
       </form>
-      <img class="auth__content-close" src="@/assets/images/reset.svg" alt="Закрыть окно" />
+      <img
+        class="auth__content-close"
+        src="@/assets/images/reset.svg"
+        alt="Закрыть окно"
+      />
     </div>
   </div>
 </template>
@@ -31,12 +49,11 @@ interface errors {
 
 import { required } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
-import { storeAuth } from "~/store/Auth";
 export default {
   name: "Authorization",
   setup(props, ctx) {
     const v$ = useVuelidate();
-    const store = storeAuth();
+    const store = useStoreAuth();
     const textError: string = "Обязательное поле для заполнения";
     const formData = ref<typeFormData>({
       Username: "",

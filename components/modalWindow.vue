@@ -1,12 +1,21 @@
 <template>
   <div class="modal-wrapper">
-    <div class="close-modal" @click="closeModal"></div>
+    <div
+      class="close-modal"
+      @click="closeModal"
+    ></div>
     <div class="modal-content">
       <div class="modal-inputs">
         <slot></slot>
       </div>
-      <span @click="closeModal"><img src="StaticWindow.iconClose.icon" alt="StaticWindow.iconClose.alt" width="12"
-          height="12" /></span>
+      <span @click="closeModal">
+        <img
+          src="StaticWindow.iconClose.icon"
+          alt="StaticWindow.iconClose.alt"
+          width="12"
+          height="12"
+        />
+      </span>
     </div>
   </div>
 </template>
@@ -90,5 +99,5 @@ export default {
 </style>
 
 function $emit(arg0: string): void {
-  throw new Error('Function not implemented.');
+throw new Error('Function not implemented.');
 }

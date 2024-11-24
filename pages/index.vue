@@ -1,26 +1,44 @@
 <template>
-  <div class="container_fluid" :class="{ fixed: getModal }" :style="
-    getModal
+  <div
+    class="container_fluid"
+    :class="{ fixed: getModal }"
+    :style="getModal
       ? 'box-shadow: 0px 8px 57px 139px rgba(125, 125, 125, 0.25);'
       : ''
-  ">
-    <header-home :activeComponent="activeComponent" @changeComponent="changeComponent" />
+      "
+  >
+    <header-home
+      :activeComponent="activeComponent"
+      @changeComponent="changeComponent"
+    />
     <div class="container__home">
-      <div class="home__top" v-if="activeComponent == 'graph'">
+      <div
+        class="home__top"
+        v-if="activeComponent == 'graph'"
+      >
         <div class="home__top-sorting">
           <button class="home__top-sorting__button">
             <p>10th May - 16th May 2021</p>
-            <img src="@/assets/images/arrowSmallWhite.svg" alt="Стрелка" />
+            <img
+              src="@/assets/images/arrowSmallWhite.svg"
+              alt="Стрелка"
+            />
           </button>
           <div></div>
         </div>
         <h1>{{ timeTitle }} {{ readTime }}! {{ time }}</h1>
         <button class="home__top-export">
-          <img src="@/assets/images/export.svg" alt="Экспортировать" />
+          <img
+            src="@/assets/images/export.svg"
+            alt="Экспортировать"
+          />
           <p>Export</p>
         </button>
       </div>
-      <transition name="home_component" mode="out-in">
+      <transition
+        name="home_component"
+        mode="out-in"
+      >
         <component :is="activeComponent"></component>
       </transition>
     </div>
@@ -28,8 +46,6 @@
 </template>
 
 <script lang="ts">
-import { storeAuth } from "~/store/Auth";
-import { storeData } from "~/store/Data";
 import graph from "~/components/Graph/Graph.vue";
 import users from "~/components/Users/Users.vue";
 import tasks from "~/components/Tasks/Tasks.vue";
@@ -37,14 +53,13 @@ type componentName = 'graph' | 'users' | 'tasks';
 export default {
   name: "PageIndex",
   setup(props, ctx) {
-    const storeAuthorisation = storeAuth();
-    const storeModal = storeData();
+    const {getLogin} = useStoreAuth();
+    const storeModal = useStoreData();
     let activeComponent = ref<componentName>("graph");
     const socket: object = {};
     const connected: object = {};
     let time: string = "";
     const interval = null;
-    const getLogin = computed(() => storeAuthorisation.getLogin);
     const getModal = computed(() => storeModal.getModal);
     const readTime = computed(() => {
       const hour = new Date().getHours();
@@ -208,5 +223,4 @@ export default {
 //   100% {
 //     opacity: 1;
 //   }
-// }
-</style>
+// }</style>

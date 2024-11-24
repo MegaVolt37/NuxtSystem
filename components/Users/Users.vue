@@ -2,30 +2,61 @@
   <div class="users">
     <div class="users__top">
       <div class="users__top-dots">
-        <img src="@/assets/images/dots.svg" alt="dots" />
+        <img
+          src="@/assets/images/dots.svg"
+          alt="dots"
+        />
       </div>
       <div class="users__top-title">
         <p>Table</p>
         <span>May to June 2021</span>
       </div>
       <div class="users__top-share">
-        <img @click="openShare()" src="@/assets/images/share.svg" alt="Поделиться" />
-        <img src="@/assets/images/cloud.svg" alt="Хранилище" />
-        <img src="@/assets/images/settings.svg" alt="Настройки" />
+        <img
+          @click="openShare()"
+          src="@/assets/images/share.svg"
+          alt="Поделиться"
+        />
+        <img
+          src="@/assets/images/cloud.svg"
+          alt="Хранилище"
+        />
+        <img
+          src="@/assets/images/settings.svg"
+          alt="Настройки"
+        />
       </div>
       <transition name="fade">
-        <div class="graph__middle-item__share" v-show="isOpenShare">
-          <div class="ya-share2" data-curtain data-shape="round"
-            data-services="vkontakte,odnoklassniki,telegram,twitter,viber,whatsapp" data-title="Заголовок ссылки"
-            data-url="http://localhost:3000/" data-image="null"></div>
+        <div
+          class="graph__middle-item__share"
+          v-show="isOpenShare"
+        >
+          <div
+            class="ya-share2"
+            data-curtain
+            data-shape="round"
+            data-services="vkontakte,odnoklassniki,telegram,twitter,viber,whatsapp"
+            data-title="Заголовок ссылки"
+            data-url="http://localhost:3000/"
+            data-image="null"
+          ></div>
         </div>
       </transition>
     </div>
-    <div class="users__middle" :class="{ scroll: scrolling }">
-      <list @scrollBlock="scrollBlock" @openChat="openChat" />
+    <div
+      class="users__middle"
+      :class="{ scroll: scrolling }"
+    >
+      <list
+        @scrollBlock="scrollBlock"
+        @openChat="openChat"
+      />
     </div>
     <transition name="chat">
-      <chat v-if="isOpenChat" @closeChat="closeChat" />
+      <chat
+        v-if="isOpenChat"
+        @closeChat="closeChat"
+      />
     </transition>
   </div>
 </template>

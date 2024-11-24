@@ -1,3 +1,122 @@
-@import "@/assets/scss/_colors.scss";
-@import "@/assets/scss/_fonts.scss";
-@import "@/assets/scss/main.scss";
+$black: #000000;
+$light-black: #111215;
+
+
+$white: #ffffff;
+
+$green: #27EE53;
+$dark-green: rgba(39, 238, 82, 0.17);
+
+$gray: rgba(17, 18, 21, 0.9);
+$gray-text: rgba(255, 255, 255, 0.64);
+
+$text: #ffffff;
+$task-description: rgba(255, 255, 255, 0.75);
+
+// Вкладка пользователи
+
+// Кнопка у поиска
+$user-search-btn-bacground: #4e4e4e;
+$user-search-btn-color: #ffffff;
+
+@font-face {
+  font-family: "Inter400";
+  font-weight: 400;
+  font-style: normal;
+  src: url("../fonts/Inter-Regular.ttf");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter500";
+  font-weight: 500;
+  font-style: normal;
+  src: url("../fonts/Inter-Medium.ttf");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter600";
+  font-weight: 600;
+  font-style: normal;
+  src: url("../fonts/Inter-SemiBold.ttf");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter700";
+  font-weight: 700;
+  font-style: normal;
+  src: url("../fonts/Inter-Bold.ttf");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter900";
+  font-weight: 900;
+  font-style: normal;
+  src: url("../fonts/Inter-Black.ttf");
+  font-display: swap;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+p,
+span {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style-type: none;
+}
+
+input {
+  border: none;
+
+  &:focus {
+    outline: none;
+
+  }
+}
+
+* {
+  box-sizing: border-box;
+  font-family: "Inter400";
+}
+
+.container_fluid {
+  background: $black;
+  box-shadow: 0px 8px 57px 139px rgba(125, 125, 125, 0.25);
+  border-radius: 20px;
+  padding: 65px 40px;
+}
+
+.container_fluid.fixed {
+  position: relative;
+  // background: rgba(196, 196, 196, 0.25);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  /* ширина всей полосы прокрутки */
+}
+
+::-webkit-scrollbar-track {
+  cursor: pointer;
+  background: #D9D9D9;
+  border-radius: 19px;
+  /* цвет зоны отслеживания */
+}
+
+::-webkit-scrollbar-thumb {
+  cursor: pointer;
+  background-color: #FFB572;
+  box-shadow: 0px 0px 15px rgba(255, 179, 114, 0.8);
+  /* цвет бегунка */
+  border-radius: 19px;
+  /* округлось бегунка */
+  border: 3px solid #FFB572;
+  /* отступ вокруг бегунка */
+}

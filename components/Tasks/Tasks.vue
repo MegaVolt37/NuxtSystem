@@ -3,31 +3,68 @@
     <div class="tasks__top">
       <div class="tasks__top-search">
         <span class="tasks__top-search__title">Поиск по названию</span>
-        <input class="tasks__top-search__input" type="text" placeholder="Fix something" />
+        <input
+          class="tasks__top-search__input"
+          type="text"
+          placeholder="Fix something"
+        />
         <button class="tasks__top-search__btn">Search</button>
       </div>
-      <Select class="tasks__top-category" :selects="selects.category" :title="'Категория'"
-        @selectOption="selectCategory" />
-      <Select class="tasks__top-priority" :selects="selects.priority" :title="'Приоритет'"
-        @selectOption="selectPriority" />
+      <Select
+        class="tasks__top-category"
+        :selects="selects.category"
+        :title="'Категория'"
+        @selectOption="selectCategory"
+      />
+      <Select
+        class="tasks__top-priority"
+        :selects="selects.priority"
+        :title="'Приоритет'"
+        @selectOption="selectPriority"
+      />
     </div>
     <div class="tasks__middle">
-      <div class="tasks__middle-item" v-for="(task, index) in tasksGroup" :key="index" @drop="onDrop($event, task.key)"
-        @dragenter.prevent @dragover.prevent>
+      <div
+        class="tasks__middle-item"
+        v-for="(task, index) in tasksGroup"
+        :key="index"
+        @drop="onDrop($event, task.key)"
+        @dragenter.prevent
+        @dragover.prevent
+      >
         <h4 class="tasks__middle-item__title">{{ task.title }}</h4>
         <div class="tasks__middle-item__list-wrapper">
-          <div class="tasks__middle-item__list" v-for="(item, index) in arrApi.filter(
-            (el) => el.category === task.key
-          )" :key="index" :style="styleBlocks(item.category)" @dragstart="onDragStart($event, item)" :draggable="true"
-            @dragover.prevent @dragleave.prevent>
+          <div
+            class="tasks__middle-item__list"
+            v-for="(item, index) in arrApi.filter(
+              (el) => el.category === task.key
+            )"
+            :key="index"
+            :style="styleBlocks(item.category)"
+            @dragstart="onDragStart($event, item)"
+            :draggable="true"
+            @dragover.prevent
+            @dragleave.prevent
+          >
             <div class="tasks__middle-item__list-btn">
-              <span class="dots" v-for="index in 3" :key="index" @click="openAction">
+              <span
+                class="dots"
+                v-for="index in 3"
+                :key="index"
+                @click="openAction"
+              >
               </span>
             </div>
-            <span class="tasks__middle-item__list-piority" :style="stylePriority(item.priority)">{{ item.priority
-            }}</span>
+            <span
+              class="tasks__middle-item__list-piority"
+              :style="stylePriority(item.priority)"
+            >{{ item.priority
+              }}</span>
             <h5 class="tasks__middle-item__list-title">{{ item.title }}</h5>
-            <p class="tasks__middle-item__list-subtitle" v-if="item.text">
+            <p
+              class="tasks__middle-item__list-subtitle"
+              v-if="item.text"
+            >
               {{ item.text }}
             </p>
           </div>

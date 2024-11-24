@@ -1,12 +1,21 @@
 <template>
-  <div class="graph__top-item" v-for="(item, index) in graph_info" :key="index">
-    <div class="graph__top-item__cube" :style="readColor(item.color)"></div>
+  <div
+    class="graph__top-item"
+    v-for="(item, index) in graph_info"
+    :key="index"
+  >
+    <div
+      class="graph__top-item__cube"
+      :style="readColor(item.color)"
+    ></div>
     <span
       class="graph__top-item__statistics"
       :style="'color:' + readTotalColorArrow(item).color"
-      >{{ item.total }}%</span
+    >{{ item.total }}%</span>
+    <div
+      class="graph__top-item__arrow"
+      :style="readTotal(item)"
     >
-    <div class="graph__top-item__arrow" :style="readTotal(item)">
       <arrowIcon
         :path_fill="readTotalColorArrow(item).color"
         :style="readTotalColorArrow(item).style"
@@ -56,23 +65,23 @@ export default {
   align-items: center;
   gap: 25px;
 }
+
 .graph__top-item {
   flex: 0 1 320px;
   display: grid;
   align-items: center;
   grid-template-columns: 0fr max-content max-content;
-  background: linear-gradient(
-    133.84deg,
-    #4e4e4e -16.04%,
-    #333333 9.33%,
-    #1a1a1a 32.02%,
-    #1a1a1a 62.06%,
-    #262626 87.42%,
-    #4e4e4e 112.12%
-  );
+  background: linear-gradient(133.84deg,
+      #4e4e4e -16.04%,
+      #333333 9.33%,
+      #1a1a1a 32.02%,
+      #1a1a1a 62.06%,
+      #262626 87.42%,
+      #4e4e4e 112.12%);
   box-shadow: 2px 6px 15px 2px rgba(12, 10, 11, 0.8);
   border-radius: 16px;
   padding: 16px;
+
   &__cube {
     grid-column: 1;
     grid-row: 1;
@@ -80,6 +89,7 @@ export default {
     height: 38px;
     border-radius: 8px;
   }
+
   &__statistics {
     grid-column: 2;
     grid-row: 1;
@@ -88,6 +98,7 @@ export default {
     width: fit-content;
     margin-left: 10px;
   }
+
   &__arrow {
     display: flex;
     align-items: center;
@@ -100,6 +111,7 @@ export default {
     border-radius: 20px;
     margin-left: 10px;
   }
+
   &__title {
     margin: 10px 0;
     grid-column: 1/5;
@@ -107,6 +119,7 @@ export default {
     font-size: 28px;
     color: $text;
   }
+
   &__subtitle {
     grid-row: 3;
     grid-column: 1/5;
