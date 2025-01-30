@@ -65,7 +65,7 @@ import tasksIcon from "@/components/images/tasksIcon.vue";
 import iconDashboard from "@/assets/images/dashboard.svg";
 import iconIssues from "@/assets/images/issues.svg";
 import iconTasks from "@/assets/images/tasks.svg";
-import { storeAuth } from "~~/store/Auth";
+import { useStoreAuth } from "~~/store/Auth";
 interface link {
   icon: any,
   img: string,
@@ -78,7 +78,7 @@ type nameComponent = 'graph' | 'users' | 'tasks';
 export default {
   name: "HomeHeader",
   setup(props,) {
-    const store = storeAuth();
+    const store = useStoreAuth();
     const links: link[] = [
       {
         icon: markRaw(dashboardIcon),

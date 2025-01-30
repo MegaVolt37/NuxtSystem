@@ -16,9 +16,44 @@
         class="home__top"
         v-if="activeComponent == 'graph'"
       >
+      <select v-model="$colorMode.preference" >
+        <option value="system">System</option>
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+        <option value="sepia">Sepia</option>
+      </select>
+
+        <!-- <UiFormItem v-for="item in forms" :key="item.title" :componentChild="item.component" :name="item.title" :default-value="item.value"/> -->
+         <UiFormItem
+            class="form-anim"
+            :componentUtils="UtilsFieldPicker"
+            :componentChild="UiFormInput"
+            label="Сайты или социальные сети проекта"
+            name="socialLinks"
+            tooltip="Прикрепите ссылку на сайт и социальные сети проекта или заявителя. Рекомендуем убедиться, что аккаунты являются общедоступными"
+            :types="types"
+            :preview="isPreview"
+            :default-value="[{value:213}]"
+            :limited-to="5"
+         />
+        <!-- <UtilsFieldPicker
+          :component="UiFormInput"
+          :componentChild="UiFormInput"
+          label="Сайты или социальные сети проекта"
+          name="socialLinks"
+          tooltip="Прикрепите ссылку на сайт и социальные сети проекта или заявителя. Рекомендуем убедиться, что аккаунты являются общедоступными"
+          :preview="false"
+          :limited-to="5"
+        /> -->
+
+      <!-- <SchemaForm :schema="schema" /> -->
+      <button class=" text-white" @click="addElements">11111111111</button>
+      <div>
+
+      </div>
         <div class="home__top-sorting">
           <button class="home__top-sorting__button">
-            <p>10th May - 16th May 2021</p>
+            <p>{{ content?.date }}</p>
             <img
               src="@/assets/images/arrowSmallWhite.svg"
               alt="Стрелка"
@@ -26,7 +61,7 @@
           </button>
           <div></div>
         </div>
-        <h1>{{ timeTitle }} {{ readTime }}! {{ time }}</h1>
+        <h1 class="">{{ timeTitle }} {{ readTime }}! {{ time }}</h1>
         <button class="home__top-export">
           <img
             src="@/assets/images/export.svg"
@@ -45,98 +80,319 @@
   </div>
 </template>
 
-<script lang="ts">
-import graph from "~/components/Graph/Graph.vue";
-import users from "~/components/Users/Users.vue";
-import tasks from "~/components/Tasks/Tasks.vue";
-type componentName = 'graph' | 'users' | 'tasks';
-export default {
-  name: "PageIndex",
-  setup(props, ctx) {
-    const {getLogin} = useStoreAuth();
-    const storeModal = useStoreData();
-    let activeComponent = ref<componentName>("graph");
-    const socket: object = {};
-    const connected: object = {};
-    let time: string = "";
-    const interval = null;
-    const getModal = computed(() => storeModal.getModal);
-    const readTime = computed(() => {
-      const hour = new Date().getHours();
-      if (hour >= 22 || hour < 7) return "ночи";
-      if (hour >= 6 && hour < 12) return "утро";
-      if (hour >= 12 && hour < 18) return "день";
-      if (hour >= 18 && hour < 22) return "вечер";
-    })
-    const timeTitle = computed(() => {
-      switch (readTime.value) {
-        case "ночи":
-          return "Доброй";
-        case "утро":
-          return "Доброе";
-        case "день":
-          return "Добрый";
-        case "вечер":
-          return "Добрый";
-      }
-    })
-    const changeComponent = (name: componentName): void => {
-      activeComponent.value = name;
-    }
-    return {
-      activeComponent,
-      socket,
-      connected,
-      time,
-      interval,
-      getLogin,
-      getModal,
-      readTime,
-      timeTitle,
-      changeComponent
-    }
+<script lang="ts" setup>
+import { SchemaForm, useSchemaForm } from "formvuelate";
+markRaw(SchemaForm);
+
+const { validationSchema } = useSchemaAuth()
+
+const level = ref(0)
+
+const { $gsap } = useNuxtApp();
+
+const { setErrors } = useValidationForm({ validationSchema })
+
+const UtilsFieldPicker = resolveComponent("UtilsFieldPicker");
+const UiFormInput = resolveComponent("UiFormInput");
+const UiFormItem = resolveComponent("UiFormItem");
+const graph = resolveComponent('Graph')
+const users = resolveComponent('Users')
+const tasks = resolveComponent('Tasks')
+// import graph from "~/components/Graph/Graph.vue";
+// import users from "~/components/Users/Users.vue";
+// import tasks from "~/components/Tasks/Tasks.vue";
+
+const test = ref([])
+const forms = ref([
+  {
+    component: UiFormInput,
+    title: "profitFrom",
+    value: 1,
   },
-  mounted() {
-    // this.socket = this.$nuxtSocket({
-    //   channel: "/",
-    // });
-    // /* Listen for events: */
-    // this.socket.on("connect", (msg, cb) => {
-    //   this.connected.value = this.socket.connected;
-    //   console.log("connected: " + this.connected)
-    //   /* Handle event */
-    // });
-    // this.socket.on("disconnect", () => {
-    //   this.connected.value = this.socket.connected;
-    //   console.log("disconnect: " + this.connected)
-    // });
-    // this.interval = setInterval(() => {
-    //   this.time = new Date().toLocaleTimeString("ru-RU");
-    //   console.log("time: " + this.time);
-    // }, 1000);
+  {
+    component: UiFormInput,
+    title: "profitFrom1",
+    value: 2,
   },
-  methods: {
-    // changeComponent(name: string): void {
-    //   this.activeComponent = name;
-    // },
-    // method1() {
-    //   /* Emit events */
-    //   this.socket.emit('method1', {
-    //     hello: 'world'
-    //   }, (resp) => {
-    //     /* Handle response, if any */
-    //   })
-    // }
+  {
+    component: UiFormInput,
+    title: "profitFrom2",
+    value: 3,
+  }
+])
+
+const schema = ref({
+  'nested0': {
+    component: SchemaForm,
+    schema: validationSchema,
+    defaultValue: 'levels'
   },
-  // beforeUnmount() {
-  //   clearInterval(this.interval);
-  // },
-  components: {
-    graph,
-    users,
-    tasks,
-  },
+  'levelItem0': {
+    component: UiFormItem,
+    componentChild: UiFormInput,
+    label: "Level item " + level.value,
+    defaultValue: '2',
+    name: "Level item " + level.value
+  }
+});
+
+const addLevelElements = () => {
+  const item = "levelItem" + level.value;
+
+  schema.value[item] = {
+    component: UiFormItem,
+    componentChild: UiFormInput,
+    label: "Level item " + level.value,
+    defaultValue: '2',
+    name: "Level item " + level.value
+  };
+
+  var nested = "nested" + level.value;
+
+  if (level.value !== 5) {
+    schema.value[nested] = {
+      component: SchemaForm,
+      schema: validationSchema,
+    };
+  }
+
+  level.value++;
+
+  // if (level <= levels) {
+  //   addLevelElements(obj[nested].schema, levels);
+  // }
 };
+
+const addElements = () => {
+  const {value,title, ...rest} = forms.value[forms.value.length - 1];
+  forms.value.push({...rest,title: title + forms.value.length,  value: value + 1});
+}
+
+type componentName = 'graph' | 'users' | 'tasks';
+
+const components = {
+  graph,
+  users,
+  tasks,
+}
+
+const {$api} = useNuxtApp()
+
+const { open: openModalTasks } = useVModal({
+	attrs: {
+		id: "main-modal-tasks",
+		component: tasks,
+	}
+});
+
+const [onSubmit, pending] = usePendingState(async () => {
+  try {
+    const body = toFormData(validationSchema.cast(formData.value))
+
+    // const { data } = await $api.forms.businessCost(body)
+  // console.log(body)
+    // emit("after-submit", data)
+  } catch (e) {
+    // console.log(e)
+
+    // const error = e?.data ?? {}
+    // const errors = error.errors ?? {}
+
+    // setErrors(errors)
+  }
+})
+
+
+// const modalStore = useModalStore();
+const { data:content } = await useAsyncData('home-content', () => queryContent('/home/').findOne())
+
+const modals = import.meta.glob("~/components/modal/*.vue");
+
+// const getComponent = computed(() =>
+//     modals[`/components/modal/${modalStore.componentNameState}.vue`]
+//         ? defineAsyncComponent(
+//               modals[`/components/modal/${modalStore.componentNameState}.vue`]
+//           )
+//         : null
+// );
+
+const { getLogin, login } = useStoreAuth();
+const storeModal = useStoreData();
+const colorMode = useColorMode();
+
+const formData = ref({})
+
+useSchemaForm(formData)
+
+let activeComponent = ref<componentName>('graph');
+const socket: object = {};
+const connected: object = {};
+let time: string = "";
+const interval = null;
+const getModal = computed(() => storeModal.getModal);
+const readTime = computed(() => {
+  const hour = new Date().getHours();
+  if (hour >= 22 || hour < 7) return "ночи";
+  if (hour >= 6 && hour < 12) return "утро";
+  if (hour >= 12 && hour < 18) return "день";
+  if (hour >= 18 && hour < 22) return "вечер";
+})
+const timeTitle = computed(() => {
+  switch (readTime.value) {
+    case "ночи":
+      return "Доброй";
+    case "утро":
+      return "Доброе";
+    case "день":
+      return "Добрый";
+    case "вечер":
+      return "Добрый";
+  }
+})
+const changeComponent = (name: componentName): void => {
+  activeComponent.value = name;
+}
+onMounted(async () => {
+  // openModalTasks()
+  await nextTick();
+
+  nextTick(() => {
+          const tl = $gsap.timeline({
+            // scrollTrigger: {
+            //   trigger: ".content",
+            //   start: "top top",
+            //   end: `+=100`,
+            //   scrub: 1,
+            //   pin: true,
+            // },
+          });
+          tl.add(animateHeader($gsap, tl));
+        });
+
+  // watch(
+  //   width,
+  //   () => {
+  //     if (width.value > 768) {
+  //       nextTick(() => {
+  //         const tl = $gsap.timeline({
+  //           scrollTrigger: {
+  //             trigger: ".content",
+  //             start: "top top",
+  //             end: `+=18000`,
+  //             scrub: 1,
+  //             pin: true,
+  //           },
+  //         });
+  //         tl.add(animateHeader($gsap, tl));
+  //         tl.add(animateDrawing($gsap, tl));
+  //         tl.add(animateModeling($gsap, tl));
+  //         tl.add(animateRender($gsap, tl));
+  //         tl.add(animateFinally($gsap, tl));
+  //         tl.add(animateAngle($gsap, tl));
+  //       });
+  //     } else {
+  //       nextTick(() => {
+  //         const tl = $gsap.timeline({});
+  //         tl.add(animateHeaderMobile($gsap, tl));
+  //         tl.add(animateDrawingMobile($gsap, tl));
+  //         tl.add(animateRenderMobile($gsap, tl));
+  //         tl.add(animateModelingMobile($gsap, tl));
+  //         tl.add(animateFinallyMobile($gsap, tl));
+  //         tl.add(animateAngleMobile($gsap, tl));
+  //       });
+  //     }
+  //   },
+  //   { immediate: true }
+  // );
+})
+// export default {
+//   name: "PageIndex",
+//   setup(props, ctx) {
+//     // const { getLogin, login } = useStoreAuth();
+//     // const storeModal = useStoreData();
+//     // let activeComponent = ref<componentName>("graph");
+//     // const socket: object = {};
+//     // const connected: object = {};
+//     // let time: string = "";
+//     // const interval = null;
+//     // const getModal = computed(() => storeModal.getModal);
+//     // const readTime = computed(() => {
+//     //   const hour = new Date().getHours();
+//     //   if (hour >= 22 || hour < 7) return "ночи";
+//     //   if (hour >= 6 && hour < 12) return "утро";
+//     //   if (hour >= 12 && hour < 18) return "день";
+//     //   if (hour >= 18 && hour < 22) return "вечер";
+//     // })
+//     // const timeTitle = computed(() => {
+//     //   switch (readTime.value) {
+//     //     case "ночи":
+//     //       return "Доброй";
+//     //     case "утро":
+//     //       return "Доброе";
+//     //     case "день":
+//     //       return "Добрый";
+//     //     case "вечер":
+//     //       return "Добрый";
+//     //   }
+//     // })
+//     // const changeComponent = (name: componentName): void => {
+//     //   activeComponent.value = name;
+//     // }
+
+//     return {
+//       activeComponent,
+//       socket,
+//       connected,
+//       time,
+//       interval,
+//       getLogin,
+//       getModal,
+//       readTime,
+//       timeTitle,
+//       changeComponent
+//     }
+//   },
+//   mounted() {
+//     // this.socket = this.$nuxtSocket({
+//     //   channel: "/",
+//     // });
+//     // /* Listen for events: */
+//     // this.socket.on("connect", (msg, cb) => {
+//     //   this.connected.value = this.socket.connected;
+//     //   console.log("connected: " + this.connected)
+//     //   /* Handle event */
+//     // });
+//     // this.socket.on("disconnect", () => {
+//     //   this.connected.value = this.socket.connected;
+//     //   console.log("disconnect: " + this.connected)
+//     // });
+//     // this.interval = setInterval(() => {
+//     //   this.time = new Date().toLocaleTimeString("ru-RU");
+//     //   console.log("time: " + this.time);
+//     // }, 1000);
+//   },
+//   methods: {
+//     // changeComponent(name: string): void {
+//     //   this.activeComponent = name;
+//     // },
+//     // method1() {
+//     //   /* Emit events */
+//     //   this.socket.emit('method1', {
+//     //     hello: 'world'
+//     //   }, (resp) => {
+//     //     /* Handle response, if any */
+//     //   })
+//     // }
+//   },
+//   // beforeUnmount() {
+//   //   clearInterval(this.interval);
+//   // },
+//   components: {
+//     graph,
+//     users,
+//     tasks,
+//   },
+// };
 </script>
 <style lang="scss" scoped>
 .container__home {
@@ -193,7 +449,7 @@ export default {
     font-size: 34px;
     text-align: center;
     letter-spacing: 0.25px;
-    color: $text;
+    @apply text-white dark:text-green;
   }
 }
 

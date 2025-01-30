@@ -4,13 +4,35 @@
     mode="out-in"
   >
     <div class="app">
-      <NuxtPage v-if="getToken" />
+      <NuxtLayout v-if="getToken">
+        <div>
+          <button @click="setLocale('en')">en</button>
+          <button @click="setLocale('ru')">ru</button>
+          <p>{{ $t('welcome') }}</p>
+        </div>
+        <NuxtPage />
+      </NuxtLayout>
       <authorization v-else />
     </div>
   </transition>
 </template>
 <script lang="ts" setup>
+const { $api } = useNuxtApp()
 const { getToken } = storeToRefs(useStoreAuth())
+const { login } = useStoreAuth()
+const { setLocale } = useI18n()
+const localePath = useLocalePath()
+onMounted(async () => {
+  try {
+    const res = await login({
+      pass: ''
+    })
+    // console.log(res)
+  } catch (error) {
+    // console.log(error)
+  }
+
+})
 </script>
 <style lang="scss" scoped>
 .app {

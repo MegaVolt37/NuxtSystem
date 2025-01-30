@@ -36,7 +36,7 @@
 import { required } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
 import { mapActions } from "pinia";
-import { storeAuth } from "~~/store/Auth";
+import { useStoreAuth } from "~~/store/Auth";
 export default {
   name: "Authorization",
   data() {
@@ -74,7 +74,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(storeAuth, ["login"]),
+    ...mapActions(useStoreAuth, ["login"]),
     errorClass(item) {
       return this.errors[item.name];
     },
@@ -89,12 +89,12 @@ export default {
     async sendForm() {
       try {
         const form = {
-          email: this.formData.Username,
+          phone: this.formData.Username,
           password: this.formData.Password,
         };
         this.login(form)
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     },
   },
